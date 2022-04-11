@@ -11,18 +11,36 @@
 <body>
     <div id="app">
         <h1>Hello {{ name }}</h1>
+
+         <!-- no lugar v-on podemos usar @ mas funciona somente para o v-on para as outras diretivas não funciona
+            utilizando @  Ficaria @click="showName" -->
+        <button v-on:click="showName('Cataline')">Botão</button>
+
+         <!-- é possivel combinar diretivas v-for e a v-on -->
+        <div v-for="user in users" @click="showName(user.name)">
+            <h2>{{ user.name }}</h2>
+        </div>    
+
+
     </div>
 
     <script>
         var app = Vue.createApp({
             data(){
                 return {
-                    name: 'Cataline'
+                    name: 'Cataline',
+                    users: [{name: 'Ronaldo'}, {name: 'kaori'}, {name: 'Blondie'}, {name: 'Nami'}]
                 }
-            }
+            },
+
+            methods: {
+                showName(name){
+                    alert(name)
+                }
+            },
         })
 
-        app.mount('#app')
+        var vm = app.mount('#app')
     </script>
 </body>
 </html>
