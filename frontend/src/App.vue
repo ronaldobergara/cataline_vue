@@ -1,9 +1,20 @@
 <template>
-  <h1>Hello World</h1>
+  <Header />
+  <Header />
+  <Header />
 </template>
+>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import Header from '@/components/Header.vue'
 
-export default defineComponent({})
+export default defineComponent({
+  components: { Header },
+  data() {
+    return {
+      name: 'Cataline',
+    }
+  },
+})
 </script>
