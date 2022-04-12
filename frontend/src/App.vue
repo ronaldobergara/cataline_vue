@@ -1,20 +1,73 @@
 <template>
-  <Header />
-  <Header />
-  <Header />
+  <div class="users">
+    <div class="container">
+      <section>
+        <h5 class="title">Novo usuário</h5>
+        <form v-on:submit.prevent="createUser">
+          <input required type="text" placeholder="Nome" v-model="form.name" />
+          <input required type="text" placeholder="E-mail" v-model="form.email" />
+          <button type="submit">Adicionar</button>
+        </form>
+      </section>
+      <section>
+        <h5 class="title">Lista de usuários</h5>
+        <ul>
+          <li v-for="user in users" :key="user.id">
+            <p>{{ user.name }}</p>
+            <small>{{ user.email }}</small>
+            <a class="destroy"></a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
 </template>
->
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Header from '@/components/Header.vue'
+import axios from '@/utils/axios'
+
+interface User {
+  id: string
+  email: string
+  name: string
+}
 
 export default defineComponent({
-  components: { Header },
   data() {
     return {
-      name: 'Cataline',
+      users: [] as User[],
+      form: {
+        name: '',
+        email: '',
+      },
     }
+  },
+  created() {
+    this.fetchUsers()
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+        const { data } = await axios.get('/users')
+        this.users = data
+      } catch (error) {
+        console.warn(error)
+      }
+    },
+    async createUser() {
+      try {
+        const { data } = await axios.post('/users', this.form)
+
+        this.users.push(data)
+
+        this.form.name = ''
+        this.form.email = ''
+      } catch (error) {
+        console.warn(error)
+      }
+    },
   },
 })
 </script>
